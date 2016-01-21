@@ -1,0 +1,36 @@
+{
+  "name": "deep-bind",
+  "description": "Bind a context to all functions in an object, including deeply nested functions.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/deep-bind",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/deep-bind",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/deep-bind/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "gulp-format-md": "^0.1.5",
+    "mocha": "*"
+  },
+  "verb": {
+    "related": {
+      "list": []
+    },
+    "toc": false,
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "layout": "default"
+  }
+}
