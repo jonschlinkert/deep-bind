@@ -1,5 +1,7 @@
 'use strict';
 
+var merge = require('mixin-deep');
+
 /**
  * Bind a `thisArg` to all the functions on the target
  *
@@ -9,18 +11,21 @@
  * @api public
  */
 
-module.exports = function bindEach(target, thisArg) {
+function deepBind(target, thisArg, options) {
   if (!isObject(target)) {
     throw new TypeError('expected an object');
   }
 
+  options = options || {};
+
   for (var key in target) {
     var fn = target[key];
     if (typeof fn === 'object') {
-      target[key] = bindEach(fn, thisArg);
+      target[key] = deepBind(fn, thisArg);
 
     } else if (typeof fn === 'function') {
-      target[key] = fn.bind(thisArg);
+      // target[key] = fn.bind(thisArg);
+      target[key] = bind(thisArg, key, fn, options);
 
       // copy function keys
       for (var k in fn) {
@@ -31,8 +36,23 @@ module.exports = function bindEach(target, thisArg) {
     }
   }
   return target;
-};
+}
 
 function isObject(val) {
   return val && typeof val === 'object';
 }
+
+function bind(thisArg, key, fn, options) {
+  return function() {
+    if (options.hasOwnProperty(key)) {
+      thisArg.options = merge({}, thisArg.options, options[key]);
+    }
+    return fn.apply(thisArg, arguments);
+  }
+}
+
+/**
+ * Expose `deepBind`
+ */
+
+module.exports = deepBind;
