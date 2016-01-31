@@ -19,10 +19,20 @@
   "scripts": {
     "test": "mocha"
   },
+  "dependencies": {
+    "mixin-deep": "^1.1.3"
+  },
   "devDependencies": {
     "gulp-format-md": "^0.1.5",
     "mocha": "*"
   },
+  "keywords": [
+    "bind",
+    "context",
+    "deep",
+    "helper",
+    "helpers"
+  ],
   "verb": {
     "related": {
       "list": []
