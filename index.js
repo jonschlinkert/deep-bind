@@ -24,7 +24,6 @@ function deepBind(target, thisArg, options) {
       target[key] = deepBind(fn, thisArg);
 
     } else if (typeof fn === 'function') {
-      // target[key] = fn.bind(thisArg);
       target[key] = bind(thisArg, key, fn, options);
 
       // copy function keys
@@ -44,8 +43,16 @@ function isObject(val) {
 
 function bind(thisArg, key, fn, options) {
   return function() {
+    if (!thisArg.hasOwnProperty('options')) {
+      thisArg.options = {};
+    }
+
     if (options.hasOwnProperty(key)) {
-      thisArg.options = merge({}, thisArg.options, options[key]);
+      var val = options[key];
+      thisArg.options[key] = val;
+      if (isObject(val)) {
+        thisArg.options = merge({}, thisArg.options, val);
+      }
     }
     return fn.apply(thisArg, arguments);
   }

@@ -151,6 +151,60 @@ describe('deepBind', function() {
     assert.equal(helpers.foo().a, 'b');
   });
 
+  it('should also expose options on options[helperName]', function() {
+    var ctx = {
+      app: {
+        views: {}
+      },
+      options: {
+        a: 'z'
+      },
+      context: {
+        a: 'b'
+      }
+    };
+    var opts = {
+      foo: {a: 'b'},
+      bar: {b: 'c'}
+    };
+    var obj = {
+      foo: function() {
+        return this.options;
+      },
+      bar: function() {},
+      baz: function() {}
+    };
+    var helpers = deepBind(obj, ctx, opts);
+    assert.equal(helpers.foo().foo.a, 'b');
+  });
+
+  it('should set non-object options on `options[helperName]`', function() {
+    var ctx = {
+      app: {
+        views: {}
+      },
+      options: {
+        a: 'z'
+      },
+      context: {
+        a: 'b'
+      }
+    };
+    var opts = {
+      foo: true,
+      bar: {b: 'c'}
+    };
+    var obj = {
+      foo: function() {
+        return this.options;
+      },
+      bar: function() {},
+      baz: function() {}
+    };
+    var helpers = deepBind(obj, ctx, opts);
+    assert.equal(helpers.foo().foo, true);
+  });
+
   it('should throw an error when invalid args are passed', function(cb) {
     try {
       deepBind();
