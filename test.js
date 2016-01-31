@@ -72,6 +72,85 @@ describe('deepBind', function() {
     assert(helpers.abc.foo.async === true);
   });
 
+  it('should expose property-specific options to a function', function() {
+    var ctx = {
+      app: {
+        views: {}
+      },
+      context: {
+        a: 'b'
+      }
+    };
+    var opts = {
+      foo: {a: 'b'},
+      bar: {b: 'c'}
+    };
+    var obj = {
+      foo: function() {
+        return this.options;
+      },
+      bar: function() {},
+      baz: function() {}
+    };
+    var helpers = deepBind(obj, ctx, opts);
+    assert.equal(helpers.foo().a, 'b');
+  });
+
+  it('should merge property-specific options with context options', function() {
+    var ctx = {
+      app: {
+        views: {}
+      },
+      options: {
+        x: 'z'
+      },
+      context: {
+        a: 'b'
+      }
+    };
+    var opts = {
+      foo: {a: 'b'},
+      bar: {b: 'c'}
+    };
+    var obj = {
+      foo: function() {
+        return this.options;
+      },
+      bar: function() {},
+      baz: function() {}
+    };
+    var helpers = deepBind(obj, ctx, opts);
+    assert.equal(helpers.foo().a, 'b');
+    assert.equal(helpers.foo().x, 'z');
+  });
+
+  it('should merge property-specific options OVER context options', function() {
+    var ctx = {
+      app: {
+        views: {}
+      },
+      options: {
+        a: 'z'
+      },
+      context: {
+        a: 'b'
+      }
+    };
+    var opts = {
+      foo: {a: 'b'},
+      bar: {b: 'c'}
+    };
+    var obj = {
+      foo: function() {
+        return this.options;
+      },
+      bar: function() {},
+      baz: function() {}
+    };
+    var helpers = deepBind(obj, ctx, opts);
+    assert.equal(helpers.foo().a, 'b');
+  });
+
   it('should throw an error when invalid args are passed', function(cb) {
     try {
       deepBind();
