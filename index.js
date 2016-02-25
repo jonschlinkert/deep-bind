@@ -47,6 +47,10 @@ function bind(thisArg, key, fn, options) {
       thisArg.options = {};
     }
 
+    if (typeof options.bindFn === 'function') {
+      thisArg = options.bindFn(thisArg, key, options);
+    }
+
     if (options.hasOwnProperty(key)) {
       var val = options[key];
       thisArg.options[key] = val;
