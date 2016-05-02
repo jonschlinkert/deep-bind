@@ -58,6 +58,7 @@ function bind(thisArg, key, fn, options) {
         thisArg.options = merge({}, thisArg.options, val);
       }
     }
+    thisArg._parent = this;
     return fn.apply(thisArg, arguments);
   }
 }
