@@ -72,6 +72,24 @@ describe('deepBind', function() {
     assert(helpers.abc.foo.async === true);
   });
 
+  it('should expose original context as _parent on bound context', function() {
+    var ctx = {
+      context: { c: 'd' }
+    };
+    var obj = {
+      context: { a: 'b' },
+      foo: function() {
+        return this._parent.context;
+      },
+      bar: function() {
+        return this.context;
+      }
+    };
+    var helpers = deepBind(obj, ctx);
+    assert.deepEqual(helpers.foo(), { a: 'b' })
+    assert.deepEqual(helpers.bar(), { c: 'd' })
+  });
+
   it('should expose property-specific options to a function', function() {
     var ctx = {
       app: {
