@@ -76,6 +76,7 @@ describe('deepBind', function() {
     var ctx = {
       context: { c: 'd' }
     };
+
     var obj = {
       context: { a: 'b' },
       foo: function() {
@@ -85,7 +86,14 @@ describe('deepBind', function() {
         return this.context;
       }
     };
-    var helpers = deepBind(obj, ctx);
+
+    var helpers = deepBind(obj, ctx, {
+      bindFn: function(thisArg, key, parent, options) {
+        thisArg._parent = parent;
+        return thisArg;
+      }
+    });
+
     assert.deepEqual(helpers.foo(), { a: 'b' })
     assert.deepEqual(helpers.bar(), { c: 'd' })
   });

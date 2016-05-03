@@ -48,7 +48,7 @@ function bind(thisArg, key, fn, options) {
     }
 
     if (typeof options.bindFn === 'function') {
-      thisArg = options.bindFn(thisArg, key, options);
+      thisArg = options.bindFn(thisArg, key, this, options);
     }
 
     if (options.hasOwnProperty(key)) {
@@ -58,7 +58,6 @@ function bind(thisArg, key, fn, options) {
         thisArg.options = merge({}, thisArg.options, val);
       }
     }
-    thisArg._parent = this;
     return fn.apply(thisArg, arguments);
   }
 }
