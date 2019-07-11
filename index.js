@@ -43,22 +43,23 @@ function isObject(val) {
 
 function bind(thisArg, key, fn, options) {
   return function() {
-    if (!thisArg.hasOwnProperty('options')) {
-      thisArg.options = {};
+    var newThisArg = thisArg;  
+    if (!newThisArg.hasOwnProperty('options')) {
+      newThisArg.options = {};
     }
 
     if (typeof options.bindFn === 'function') {
-      thisArg = options.bindFn(thisArg, key, this, options);
+      newThisArg = options.bindFn(newThisArg, key, this, options);
     }
 
     if (options.hasOwnProperty(key)) {
       var val = options[key];
-      thisArg.options[key] = val;
+      newThisArg.options[key] = val;
       if (isObject(val)) {
-        thisArg.options = merge({}, thisArg.options, val);
+        newThisArg.options = merge({}, newThisArg.options, val);
       }
     }
-    return fn.apply(thisArg, arguments);
+    return fn.apply(newThisArg, arguments);
   }
 }
 
